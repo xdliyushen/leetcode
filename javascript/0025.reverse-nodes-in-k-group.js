@@ -44,72 +44,51 @@ Output: [3,2,1,4,5]
  * @param {number} k
  * @return {ListNode}
  */
-var reverseKGroup = function(head2, k) {
+var reverseKGroup = function (listhead, k) {
     let i = 0;
-    let prev = null;
-    let curr = head2;
-    let head = null;
+    let prev = listhead;
+    let curr = listhead.next;
+    let head = listhead;
     let tail = null;
     let reversedHead = null;
-    while(curr && i < k) {
+    while (curr && i < k) {
         let next = curr.next;
         curr.next = prev;
         prev = curr;
         curr = next;
-        i++;
 
-        if(i == k) {
-            if(!reversedHead) {
+        if (i === k - 2) {
+            if (!reversedHead) {
                 reversedHead = prev;
             }
 
+            if (tail) {
+                tail.next = prev;
+            }
+
             head.next = curr;
+            tail = head;
             prev = head = curr;
             curr = curr && curr.next;
             i = 0;
+        } else {
+            i++;
         }
     }
 
     // reverse
-    if(i!==0) {
-        while(curr !== head2) {
+    if (i !== 0) {
+        while (curr !== head) {
             let next = curr;
+            let prev2 = prev.next;
             curr = prev;
             prev.next = next;
-            prev = prev.next;
+            prev = prev2;
         }
     }
 
-    return reversedHead;
+    return reversedHead || listhead;
 };
-
-function ListNode(val, next) {
-    this.val = (val===undefined ? 0 : val)
-    this.next = (next===undefined ? null : next)
-}
-
-const createListNode = (vals) => {
-    const head = new ListNode();
-    let cursor = head;
-    for(let v of vals) {
-        cursor.next = new ListNode(v);
-        cursor = cursor.next;
-    }
-    return head.next;
-}
-
-const printListNode = (header) => {
-    const vals = [];
-    let cursor = header;
-    while(cursor.next) {
-        vals.push(cursor.val);
-        cursor = cursor.next;
-    }
-    console.log(vals);
-    return vals;
-}
-
-printListNode(reverseKGroup(createListNode([1, 2, 3, 4, 5]), 3))
 
 // @lc code=end
 
