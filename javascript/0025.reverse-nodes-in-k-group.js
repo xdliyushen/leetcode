@@ -44,6 +44,7 @@ Output: [3,2,1,4,5]
  * @param {number} k
  * @return {ListNode}
  */
+// 初始版本
 var reverseKGroup = function (listhead, k) {
     let i = 0;
     let prev = listhead;
@@ -89,6 +90,48 @@ var reverseKGroup = function (listhead, k) {
 
     return reversedHead || listhead;
 };
+
+// 题解版本
+var reverseKGroup = function (head, k) {
+    let dummy = new ListNode(0, head);
+    // 子链表的头部和尾部节点
+    let currTail = head;
+    let currHead = head;
+    // 子链表头部的上一个节点
+    let prevTail = dummy;
+    // 子链表尾部的下一个节点
+    let nextHead = head;
+
+    while(currHead) {
+        for(let i = 1; i < k; i++) {
+            currTail = currTail.next;
+            if(!currTail) {
+                return dummy.next;
+            }
+        }
+        nextHead = currTail.next;
+        
+        // 翻转子链表
+        let prev = currHead;
+        let curr = currHead.next;
+        for(let i = 1; i < k; i++) {
+            let next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        // 子链表重新链接
+        prevTail.next = currTail;
+        currHead.next = nextHead;
+
+        prevTail = currHead;
+        currHead = nextHead;
+        currTail = nextHead;
+    }
+
+    return dummy.next;
+}
 
 // @lc code=end
 
