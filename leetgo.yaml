@@ -3,6 +3,7 @@
 language: en
 code:
   lang: javascript
+  separate_description_file: false
 leetcode:
   site: https://leetcode.com
 #  credentials:
