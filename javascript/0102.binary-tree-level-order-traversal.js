@@ -62,7 +62,9 @@ var levelOrder = function(root) {
             if(node.right) nodes.push(node.right);
         }
 
-        values.push(currentLevelValue);
+        if(currentLevelValue.length) {
+            values.push(currentLevelValue);
+        }
     }
 
     return values;
